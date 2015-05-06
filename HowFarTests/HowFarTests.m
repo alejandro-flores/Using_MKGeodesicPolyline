@@ -2,7 +2,7 @@
 //  HowFarTests.m
 //  HowFarTests
 //
-//  Created by Alejandro Martin Flores Naranjo on 5/1/15.
+//  Created by Alejandro Flores on 5/1/15.
 //  Copyright (c) 2015 Alex Flores. All rights reserved.
 //
 
