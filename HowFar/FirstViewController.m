@@ -9,30 +9,30 @@
 #import "FirstViewController.h"
 #import <MapKit/MapKit.h>
 
-@interface FirstViewController ()
+@interface FirstViewController () <MKMapViewDelegate>
 
 - (IBAction)clearAllPins:(UIButton *)sender;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@property (weak, nonatomic) IBOutlet UIButton *clearPinsButton;
 @property (weak, nonatomic) IBOutlet UITextField *distanceTextField;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *mapTypeSegmentedControl;
-@property (weak, nonatomic) IBOutlet UIButton *clearPinsButton;
-
+@property (strong, nonatomic) MKGeodesicPolyline *geodesicPolyLine;
+@property (strong, nonatomic) NSMutableArray *pinsArray;
+@property (strong, nonatomic) MKPointAnnotation *pin;
 @end
 
 @implementation FirstViewController
-MKPointAnnotation *pin;
-NSMutableArray *pinsArray;
 int pinCounter = 0;
 
 #pragma mark - Lifecycle
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.mapView.delegate = self;
+    self.pinsArray = [[NSMutableArray alloc]init];
     self.distanceTextField.placeholder = @"0 km";
-    //Default segmentedControl index is 0 for Standard MapType
-    [self.mapTypeSegmentedControl setSelectedSegmentIndex:0];
-    pinsArray = [[NSMutableArray alloc]init];
-    
-    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(handleLongPressGesture:)];
+    [self.mapTypeSegmentedControl setSelectedSegmentIndex:0]; //Default index is 0 for Standard MapType
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self
+                                                                                           action:@selector(handleLongPressGesture:)];
     [self.mapView addGestureRecognizer:longPress];
 }
 
@@ -46,37 +46,43 @@ int pinCounter = 0;
         CGPoint p = [sender locationInView:self.mapView];
         CLLocationCoordinate2D coord = [self.mapView convertPoint:p toCoordinateFromView:self.mapView];
         //Create annotation and add it to map
-        pin = [[MKPointAnnotation alloc]init];
-        pin.coordinate = coord;
-        pin.title = [NSString stringWithFormat:@"%d", pinCounter += 1];
-        [pinsArray addObject:pin];
-        [_mapView addAnnotations:pinsArray];
-        NSLog(@"%lu", (unsigned long)[pinsArray count]);
+        self.pin = [[MKPointAnnotation alloc]init];
+        self.pin.coordinate = coord;
+        self.pin.title = [NSString stringWithFormat:@"Pin #%d", pinCounter += 1];
+        [self.pinsArray addObject:self.pin];
+        [self.mapView addAnnotations:self.pinsArray];
         [self displayDistanceBetweenPins];
     }
 }
 
+#pragma mark - Miscellaneous
 -(void)displayDistanceBetweenPins {
-    if([pinsArray count] == 2) {
-        CLLocation *pointA = [pinsArray firstObject];
+    if([self.pinsArray count] == 2) {
+        CLLocation *pointA = [self.pinsArray firstObject];
         CLLocation *A = [[CLLocation alloc]initWithLatitude:pointA.coordinate.latitude longitude:pointA.coordinate.longitude];
-        CLLocation *pointB = [pinsArray lastObject];
+        CLLocation *pointB = [self.pinsArray lastObject];
         CLLocation *B = [[CLLocation alloc]initWithLatitude:pointB.coordinate.latitude longitude:pointB.coordinate.longitude];
         CLLocationDistance distance = [B distanceFromLocation:A];
-        _distanceTextField.text = [NSString stringWithFormat:@"%.2f km", distance / 1000];
+        self.distanceTextField.text = [NSString stringWithFormat:@"%.2f km", distance / 1000];
+        //Draws a MKGeodesicPolyline between the two points.
+        CLLocationCoordinate2D coords[2] = {A.coordinate, B.coordinate};
+        self.geodesicPolyLine = [MKGeodesicPolyline polylineWithCoordinates:coords count:2];
+        [self.mapView addOverlay:self.geodesicPolyLine];
     }
     else {
-        _distanceTextField.text = nil;
+        self.distanceTextField.text = nil;
+        //TODO: Don't allow creating a third pin.
     }
 }
 
 - (IBAction)clearAllPins:(UIButton *)sender {
-    [_mapView removeAnnotations:pinsArray];
-    [pinsArray removeAllObjects];
+    [self.mapView removeAnnotations:self.pinsArray];
+    [self.pinsArray removeAllObjects];
+    self.distanceTextField.text = nil;
+    [self.mapView removeOverlay:self.geodesicPolyLine];
     pinCounter = 0;
 }
 
-#pragma mark - Map Methods
 - (IBAction)changeMapType:(UISegmentedControl *)sender {
     //Get selected index position
     NSInteger index = [self.mapTypeSegmentedControl selectedSegmentIndex];
@@ -91,11 +97,17 @@ int pinCounter = 0;
     }
 }
 
-#pragma mark - Navigation
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#pragma mark - MKMapViewDelegate
+-(MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay {
+    if (![overlay isKindOfClass:[MKPolyline class]]) {
+        return nil;
+    }
+    MKPolylineRenderer *renderer = [[MKPolylineRenderer alloc]initWithPolyline:(MKPolyline *)overlay];
+    renderer.lineWidth = 5.0f;
+    renderer.strokeColor = [UIColor redColor];
+    renderer.alpha = 0.5;
+    
+    return renderer;
 }
 
 @end

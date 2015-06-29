@@ -14,7 +14,6 @@
 		7E17EA1B1AF3D0AA004CF214 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E17EA191AF3D0AA004CF214 /* LaunchScreen.xib */; };
 		7E17EA271AF3D0AA004CF214 /* HowFarTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E17EA261AF3D0AA004CF214 /* HowFarTests.m */; };
 		7E17EA381AF3D2D9004CF214 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E17EA371AF3D2D9004CF214 /* FirstViewController.m */; };
-		7E17EA3B1AF3D563004CF214 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E17EA3A1AF3D563004CF214 /* SecondViewController.m */; };
 		7E17EA3D1AF3D6C0004CF214 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E17EA3C1AF3D6C0004CF214 /* MapKit.framework */; };
 		7EE5039F1AFABFDF00ED70CA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EE5039E1AFABFDF00ED70CA /* ViewController.m */; };
 /* End PBXBuildFile section */
@@ -43,8 +42,6 @@
 		7E17EA261AF3D0AA004CF214 /* HowFarTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HowFarTests.m; sourceTree = "<group>"; };
 		7E17EA361AF3D2D9004CF214 /* FirstViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstViewController.h; sourceTree = "<group>"; };
 		7E17EA371AF3D2D9004CF214 /* FirstViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstViewController.m; sourceTree = "<group>"; };
-		7E17EA391AF3D563004CF214 /* SecondViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
-		7E17EA3A1AF3D563004CF214 /* SecondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
 		7E17EA3C1AF3D6C0004CF214 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		7EE5039D1AFABFDF00ED70CA /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		7EE5039E1AFABFDF00ED70CA /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
@@ -93,7 +90,6 @@
 			children = (
 				7E17EA141AF3D0AA004CF214 /* Main.storyboard */,
 				7E17EA191AF3D0AA004CF214 /* LaunchScreen.xib */,
-				7E17EA321AF3D1D2004CF214 /* Model */,
 				7E17EA311AF3D1CD004CF214 /* View */,
 				7E17EA301AF3D1C2004CF214 /* Controller */,
 				7E17EA171AF3D0AA004CF214 /* Images.xcassets */,
@@ -135,8 +131,6 @@
 			children = (
 				7E17EA361AF3D2D9004CF214 /* FirstViewController.h */,
 				7E17EA371AF3D2D9004CF214 /* FirstViewController.m */,
-				7E17EA391AF3D563004CF214 /* SecondViewController.h */,
-				7E17EA3A1AF3D563004CF214 /* SecondViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -148,13 +142,6 @@
 				7EE5039E1AFABFDF00ED70CA /* ViewController.m */,
 			);
 			name = View;
-			sourceTree = "<group>";
-		};
-		7E17EA321AF3D1D2004CF214 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,7 +244,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7E17EA3B1AF3D563004CF214 /* SecondViewController.m in Sources */,
 				7E17EA0D1AF3D0AA004CF214 /* AppDelegate.m in Sources */,
 				7E17EA0A1AF3D0AA004CF214 /* main.m in Sources */,
 				7E17EA381AF3D2D9004CF214 /* FirstViewController.m in Sources */,
