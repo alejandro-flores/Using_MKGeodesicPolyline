@@ -1,17 +1,16 @@
 //
-//  FirstViewController.m
+//  MapViewController.m
 //  HowFar
 //
-//  Created by Alejandro Flores on 5/1/15.
-//  Copyright (c) 2015 Alex Flores. All rights reserved.
+//  Created by Alex on 12/30/15.
+//  Copyright © 2015 Alex Flores. All rights reserved.
 //
-
-#import "FirstViewController.h"
+#import "MapViewController.h"
 #import <MapKit/MapKit.h>
 #define METERS_TO_MILES 0.000621371
 
-@interface FirstViewController () <MKMapViewDelegate>
-- (IBAction)clearAllPins:(UIButton *)sender;
+@interface MapViewController () <MKMapViewDelegate>
+
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UIButton *clearPinsButton;
 @property (weak, nonatomic) IBOutlet UITextField *distanceTextField;
@@ -20,16 +19,18 @@
 @property (strong, nonatomic) MKGeodesicPolyline *geodesicPolyLine;
 @property (strong, nonatomic) NSMutableArray *pinsArray;
 @property (strong, nonatomic) MKPointAnnotation *pin;
-- (IBAction)changeUnits:(UISegmentedControl *)sender;
+@property (nonatomic) NSInteger pinCounter;
+@property (nonatomic) NSInteger tapCounter;
+
 @end
 
-@implementation FirstViewController
-int pinCounter = 0;
-int tapCounter = 0;
+@implementation MapViewController
 
 #pragma mark - Lifecycle
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.pinCounter = 0;
+    self.tapCounter = 0;
     self.mapView.delegate = self;
     self.pinsArray = [[NSMutableArray alloc]init];
     [self setPlaceholderUnits];
@@ -37,21 +38,22 @@ int tapCounter = 0;
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self
                                                                                            action:@selector(handleLongPressGesture:)];
     [self.mapView addGestureRecognizer:longPress];
+    self.clearPinsButton.layer.cornerRadius = 8;
+    self.clearPinsButton.clipsToBounds = YES;
 }
 
 #pragma mark - Gesture Recognizer Methods
 -(void)handleLongPressGesture:(UIGestureRecognizer *)sender {
-    if(sender.state == UIGestureRecognizerStateEnded || sender.state == UIGestureRecognizerStateChanged) {
+    if (sender.state == UIGestureRecognizerStateEnded || sender.state == UIGestureRecognizerStateChanged)
         return;
-    }
     else {
-        //Get CGPoint for touch and convert it to lat and long to display on map
-        CGPoint p = [sender locationInView:self.mapView];
-        CLLocationCoordinate2D coord = [self.mapView convertPoint:p toCoordinateFromView:self.mapView];
+        //Get CGPoint for touch and convert it to a latitude and longitude to display on the map.
+        CGPoint point = [sender locationInView:self.mapView];
+        CLLocationCoordinate2D coord = [self.mapView convertPoint:point toCoordinateFromView:self.mapView];
         //Create annotation and add it to map
         self.pin = [[MKPointAnnotation alloc]init];
         self.pin.coordinate = coord;
-        self.pin.title = [NSString stringWithFormat:@"Pin #%d", pinCounter += 1];
+        self.pin.title = [NSString stringWithFormat:@"Pin #%ld", self.pinCounter += 1];
         [self.pinsArray addObject:self.pin];
         [self.mapView addAnnotations:self.pinsArray];
         [self displayDistanceBetweenPins];
@@ -59,10 +61,10 @@ int tapCounter = 0;
     }
 }
 
-#pragma mark - Miscellaneous
+#pragma mark - Distance calculation and Manipulation Methods
 -(CGFloat)displayDistanceBetweenPins {
     CGFloat calculatedDistance = 0;
-    if([self.pinsArray count] == 2) {
+    if([self.pinsArray count] <= 2) {
         CLLocation *pointA = [self.pinsArray firstObject];
         CLLocation *A = [[CLLocation alloc]initWithLatitude:pointA.coordinate.latitude longitude:pointA.coordinate.longitude];
         CLLocation *pointB = [self.pinsArray lastObject];
@@ -81,6 +83,17 @@ int tapCounter = 0;
     return calculatedDistance;
 }
 
+- (IBAction)clearAllPins:(UIButton *)sender {
+    [self.mapView removeAnnotations:self.pinsArray];
+    [self.pinsArray removeAllObjects];
+    if ([self.mapView.overlays count] > 0) {
+        [self.mapView removeOverlays:[self.mapView overlays]];
+    }
+    self.distanceTextField.text = nil;
+    self.pinCounter = 0;
+    [self setPlaceholderUnits];
+}
+
 -(void)displayMetricDistance {
     CGFloat distance = [self displayDistanceBetweenPins];
     double metricDistance = distance / 1000;
@@ -94,7 +107,7 @@ int tapCounter = 0;
 }
 
 - (IBAction)changeMapType:(UISegmentedControl *)sender {
-    //Get selected index position
+    //Get selected index position.
     NSInteger index = [self.mapTypeSegmentedControl selectedSegmentIndex];
     if (index == 0) {
         self.mapView.mapType = MKMapTypeStandard;
@@ -109,7 +122,7 @@ int tapCounter = 0;
 
 - (IBAction)changeUnits:(UISegmentedControl *)sender {
     NSInteger index = [self.unitsSegmentedControl selectedSegmentIndex];
-    if(index == 0) {
+    if (index == 0) {
         [self displayMetricDistance];
     }
     else {
@@ -117,20 +130,9 @@ int tapCounter = 0;
     }
 }
 
-- (IBAction)clearAllPins:(UIButton *)sender {
-    [self.mapView removeAnnotations:self.pinsArray];
-    [self.pinsArray removeAllObjects];
-    if ([self.mapView.overlays count] > 0) {
-        [self.mapView removeOverlays:[self.mapView overlays]];
-    }
-    self.distanceTextField.text = nil;
-    pinCounter = 0;
-    [self setPlaceholderUnits];
-}
-
 -(void)setPlaceholderUnits {
     NSInteger index = [self.unitsSegmentedControl selectedSegmentIndex];
-    if(index == 0) {
+    if (index == 0) {
         self.distanceTextField.placeholder = @"0.0 km";
     }
     else {
@@ -144,8 +146,8 @@ int tapCounter = 0;
         return nil;
     }
     MKPolylineRenderer *renderer = [[MKPolylineRenderer alloc]initWithPolyline:(MKPolyline *)overlay];
-    renderer.lineWidth = 5.0f;
     renderer.strokeColor = [UIColor redColor];
+    renderer.lineWidth = 2.0f;
     renderer.alpha = 0.5;
     
     return renderer;
