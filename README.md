@@ -1,8 +1,6 @@
-#MKGeodesicPolyline - MapKit
-App using MKGeodesicPolyline to draw path between two locations, then displaying the distance in Kilometers.
+#MKGeodesicPolyline
+Example on how to draw a MKGeodesicPolyline path between two MKPointAnnotations and then calculating the distance between them.
 
-
-Why MKGeodesicPolylines? What's MKGeodesicPolyline? 
 
 MKGeodesicPolyline is used to render a direct straight path on a curved surface, such as Earth's. Here the "direct" path
 appears as an arc because of the curvature of the Earth. I chose MKGeodesicPolylines because it is more realistic than using a plain line between the points. 
