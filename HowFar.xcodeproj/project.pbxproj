@@ -13,7 +13,6 @@
 		7E17EA181AF3D0AA004CF214 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E17EA171AF3D0AA004CF214 /* Images.xcassets */; };
 		7E17EA1B1AF3D0AA004CF214 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E17EA191AF3D0AA004CF214 /* LaunchScreen.xib */; };
 		7E17EA271AF3D0AA004CF214 /* HowFarTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E17EA261AF3D0AA004CF214 /* HowFarTests.m */; };
-		7E17EA3D1AF3D6C0004CF214 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E17EA3C1AF3D6C0004CF214 /* MapKit.framework */; };
 		FAA028E61C34AE5C0062AFB7 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA028E51C34AE5C0062AFB7 /* MapViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -39,7 +38,6 @@
 		7E17EA201AF3D0AA004CF214 /* HowFarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HowFarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E17EA251AF3D0AA004CF214 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7E17EA261AF3D0AA004CF214 /* HowFarTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HowFarTests.m; sourceTree = "<group>"; };
-		7E17EA3C1AF3D6C0004CF214 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		FAA028E41C34AE5C0062AFB7 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		FAA028E51C34AE5C0062AFB7 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -49,7 +47,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7E17EA3D1AF3D6C0004CF214 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,7 +63,6 @@
 		7E17E9FB1AF3D0AA004CF214 = {
 			isa = PBXGroup;
 			children = (
-				7E17EA3C1AF3D6C0004CF214 /* MapKit.framework */,
 				7E17EA061AF3D0AA004CF214 /* HowFar */,
 				7E17EA231AF3D0AA004CF214 /* HowFarTests */,
 				7E17EA051AF3D0AA004CF214 /* Products */,
@@ -175,7 +171,7 @@
 		7E17E9FC1AF3D0AA004CF214 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Alex Flores";
 				TargetAttributes = {
 					7E17EA031AF3D0AA004CF214 = {
@@ -289,8 +285,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -299,6 +297,7 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -331,8 +330,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -340,6 +341,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
